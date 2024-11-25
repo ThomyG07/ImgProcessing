@@ -1,6 +1,6 @@
-webtalk_init -webtalk_dir C:/Users/tg151597/Documents/GitHub/ImgProcessing/Projet_Lena_Tg.sim/sim_1/behav/xsim/xsim.dir/TestBench_LR_behav/webtalk/
+webtalk_init -webtalk_dir C:/Users/tg151597/Documents/GitHub/ImgProcessing/Projet_Lena_Tg.sim/sim_1/behav/xsim/xsim.dir/TestBench_MemoireCache_behav/webtalk/
 webtalk_register_client -client project
-webtalk_add_data -client project -key date_generated -value "Mon Nov 25 10:27:28 2024" -context "software_version_and_target_device"
+webtalk_add_data -client project -key date_generated -value "Mon Nov 25 12:01:05 2024" -context "software_version_and_target_device"
 webtalk_add_data -client project -key product_version -value "XSIM v2019.2 (64-bit)" -context "software_version_and_target_device"
 webtalk_add_data -client project -key build_version -value "2708876" -context "software_version_and_target_device"
 webtalk_add_data -client project -key os_platform -value "WIN64" -context "software_version_and_target_device"
@@ -14,7 +14,7 @@ webtalk_add_data -client project -key target_package -value "not_applicable" -co
 webtalk_add_data -client project -key target_speed -value "not_applicable" -context "software_version_and_target_device"
 webtalk_add_data -client project -key random_id -value "5d86807a-2adc-4a08-8c0d-ca2b7eea21d6" -context "software_version_and_target_device"
 webtalk_add_data -client project -key project_id -value "d68c03d26c28496abdc23bd5b909fc61" -context "software_version_and_target_device"
-webtalk_add_data -client project -key project_iteration -value "33" -context "software_version_and_target_device"
+webtalk_add_data -client project -key project_iteration -value "62" -context "software_version_and_target_device"
 webtalk_add_data -client project -key os_name -value "Windows Server 2016 or Windows 10" -context "user_environment"
 webtalk_add_data -client project -key os_release -value "major release  (build 9200)" -context "user_environment"
 webtalk_add_data -client project -key cpu_name -value "Intel(R) Core(TM) i7-2600 CPU @ 3.40GHz" -context "user_environment"
@@ -22,11 +22,12 @@ webtalk_add_data -client project -key cpu_speed -value "3392 MHz" -context "user
 webtalk_add_data -client project -key total_processors -value "1" -context "user_environment"
 webtalk_add_data -client project -key system_ram -value "17.000 GB" -context "user_environment"
 webtalk_register_client -client xsim
+webtalk_add_data -client xsim -key runall -value "true" -context "xsim\\command_line_options"
 webtalk_add_data -client xsim -key Command -value "xsim" -context "xsim\\command_line_options"
 webtalk_add_data -client xsim -key trace_waveform -value "true" -context "xsim\\usage"
-webtalk_add_data -client xsim -key runtime -value "1 us" -context "xsim\\usage"
-webtalk_add_data -client xsim -key iteration -value "2" -context "xsim\\usage"
-webtalk_add_data -client xsim -key Simulation_Time -value "0.34_sec" -context "xsim\\usage"
-webtalk_add_data -client xsim -key Simulation_Memory -value "7568_KB" -context "xsim\\usage"
-webtalk_transmit -clientid 3333760187 -regid "174552755_1777500891_210749928_468" -xml C:/Users/tg151597/Documents/GitHub/ImgProcessing/Projet_Lena_Tg.sim/sim_1/behav/xsim/xsim.dir/TestBench_LR_behav/webtalk/usage_statistics_ext_xsim.xml -html C:/Users/tg151597/Documents/GitHub/ImgProcessing/Projet_Lena_Tg.sim/sim_1/behav/xsim/xsim.dir/TestBench_LR_behav/webtalk/usage_statistics_ext_xsim.html -wdm C:/Users/tg151597/Documents/GitHub/ImgProcessing/Projet_Lena_Tg.sim/sim_1/behav/xsim/xsim.dir/TestBench_LR_behav/webtalk/usage_statistics_ext_xsim.wdm -intro "<H3>XSIM Usage Report</H3><BR>"
+webtalk_add_data -client xsim -key runtime -value "2190705 ns" -context "xsim\\usage"
+webtalk_add_data -client xsim -key iteration -value "4" -context "xsim\\usage"
+webtalk_add_data -client xsim -key Simulation_Time -value "7.97_sec" -context "xsim\\usage"
+webtalk_add_data -client xsim -key Simulation_Memory -value "15984_KB" -context "xsim\\usage"
+webtalk_transmit -clientid 2619043157 -regid "174552755_1777500891_210749928_468" -xml C:/Users/tg151597/Documents/GitHub/ImgProcessing/Projet_Lena_Tg.sim/sim_1/behav/xsim/xsim.dir/TestBench_MemoireCache_behav/webtalk/usage_statistics_ext_xsim.xml -html C:/Users/tg151597/Documents/GitHub/ImgProcessing/Projet_Lena_Tg.sim/sim_1/behav/xsim/xsim.dir/TestBench_MemoireCache_behav/webtalk/usage_statistics_ext_xsim.html -wdm C:/Users/tg151597/Documents/GitHub/ImgProcessing/Projet_Lena_Tg.sim/sim_1/behav/xsim/xsim.dir/TestBench_MemoireCache_behav/webtalk/usage_statistics_ext_xsim.wdm -intro "<H3>XSIM Usage Report</H3><BR>"
 webtalk_terminate

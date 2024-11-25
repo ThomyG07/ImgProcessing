@@ -62,6 +62,7 @@ signal dout_s : STD_LOGIC_VECTOR(7 DOWNTO 0);
 
 signal wr_rst_busy_s : STD_LOGIC; 
 signal rd_rst_busy_s : STD_LOGIC;
+signal prog_full_s : STD_LOGIC;
 begin
 
 UUT1: fifo_generator_0 port map(
@@ -75,12 +76,13 @@ UUT1: fifo_generator_0 port map(
     full => full,
     empty => empty,
     data_count => data_count,
-    prog_full => rd_en_s,
+    prog_full => prog_full_s,
     wr_rst_busy => wr_rst_busy_s,
     rd_rst_busy => rd_rst_busy_s
     ); 
       
 DataAvailable <= rd_en_s;
+rd_en_s <= prog_full_s;
 
 P1: process(CLK)
     begin

@@ -38,7 +38,7 @@ end TestBench_LR;
 architecture TestBench_LR_arch of TestBench_LR is
 component LR IS
   PORT (
-    clk : IN STD_LOGIC;
+   clk : IN STD_LOGIC;
     rst : IN STD_LOGIC;
     din : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
     wr_en : IN STD_LOGIC;
@@ -48,8 +48,6 @@ component LR IS
     empty : OUT STD_LOGIC;
     data_count : OUT STD_LOGIC_VECTOR(9 DOWNTO 0);
     prog_full : OUT STD_LOGIC;
-    wr_rst_busy : OUT STD_LOGIC;
-    rd_rst_busy : OUT STD_LOGIC ;
     DataAvailable: OUT STD_LOGIC 
   );
 END component;
@@ -64,8 +62,6 @@ signal full_s :  STD_LOGIC;
 Signal empty_s : STD_LOGIC;
 Signal data_count_s : STD_LOGIC_VECTOR(9 DOWNTO 0);
 Signal prog_full_s : STD_LOGIC;
-Signal wr_rst_busy_s : STD_LOGIC;
-Signal rd_rst_busy_s : STD_LOGIC;
 Signal DataAvailable_s : STD_LOGIC;
 constant clock_period: time := 10 ns;
 begin
@@ -81,8 +77,6 @@ UUT1: LR port map(
     empty => empty_s,
     data_count => data_count_s,
     prog_full => prog_full_s,
-    wr_rst_busy => wr_rst_busy_s,
-    rd_rst_busy => rd_rst_busy_s,
     DataAvailable => DataAvailable_s
     ); 
     clocking: process
@@ -96,11 +90,10 @@ UUT1: LR port map(
   stimulus: process
   begin
   --init fifo
-    prog_full_s <= '0';
     rst_s <= '1';
     din_s <= (others=>'0');
     wr_en_s <= '0';
-    prog_full_thresh_s <= "0000000000";
+    prog_full_thresh_s <= "0000000011";
     wait for 3*clock_period;
     rst_s <= '0';
     prog_full_thresh_s <= "0000000011";
@@ -118,16 +111,6 @@ UUT1: LR port map(
     din_s <= x"04";
     wait for clock_period;
   
-    wr_en_s <= '0';
-    wait for 3*clock_period;
-    wr_en_s <= '1';
-    din_s <= x"05";
-    wait for clock_period;
-    din_s <= x"06";
-    wait for clock_period;
-    din_s <= x"07";
-    wait for clock_period;
-    
     wr_en_s <= '0';
     
     wait ;

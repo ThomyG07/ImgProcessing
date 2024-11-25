@@ -35,12 +35,18 @@ entity MemoireCache is
     Port (  clk : in STD_LOGIC;
            Data_in : in STD_LOGIC_VECTOR (7 downto 0);
            Enable : in STD_LOGIC;
-           EnableLR1 : in STD_LOGIC;
-           EnableLR2 : in STD_LOGIC;
            Reset : in STD_LOGIC;
-           Empty : out STD_LOGIC;
-           Full : out STD_LOGIC;
-           DataAvailable: OUT STD_LOGIC; 
+           
+           full_lr1 : out STD_LOGIC; 
+           wr_en1r1 : in STD_LOGIC;
+           empty_1r1 : out STD_LOGIC;
+           prog_full_lr1 : out STD_LOGIC;
+           
+           full_lr2 : out STD_LOGIC; 
+           wr_en1r2 : in STD_LOGIC;
+           empty_1r2 : out STD_LOGIC;
+           prog_full_lr2 : out STD_LOGIC;
+
            P1 : out STD_LOGIC_VECTOR (7 downto 0);
            P2 : out STD_LOGIC_VECTOR (7 downto 0);
            P3 : out STD_LOGIC_VECTOR (7 downto 0);
@@ -48,7 +54,8 @@ entity MemoireCache is
            P5 : out STD_LOGIC_VECTOR (7 downto 0);
            P6 : out STD_LOGIC_VECTOR (7 downto 0);
            P7 : out STD_LOGIC_VECTOR (7 downto 0);
-           P8 : out STD_LOGIC_VECTOR (7 downto 0)
+           P8 : out STD_LOGIC_VECTOR (7 downto 0);
+           P9 : out STD_LOGIC_VECTOR (7 downto 0)
            );
 end MemoireCache;
 
@@ -82,80 +89,134 @@ end component;
 
 type Pixel_s is array(0 to 8) of STD_LOGIC_VECTOR(7 downto 0);
 signal P_s: Pixel_s; 
-signal full_lr1 : STD_LOGIC; 
-signal wr_en1r1 : STD_LOGIC;
-signal empty_1r1 : STD_LOGIC;
-signal prog_full_lr1 : STD_LOGIC;
+
 signal TempFifo1: STD_LOGIC_VECTOR(7 downto 0);
-signal Datacount_lr1: STD_LOGIC_VECTOR(7 downto 0);
+signal Datacount_lr1: STD_LOGIC_VECTOR(9 downto 0);
 signal DataAvailable_lr1: STD_LOGIC;
+
 signal TempFifo2: STD_LOGIC_VECTOR(7 downto 0);
+signal Datacount_lr2: STD_LOGIC_VECTOR(9 downto 0);
+signal DataAvailable_lr2: STD_LOGIC;
+
 begin
- UUT1 : FF_gen_tg 
+ FF_0 : FF_gen_tg 
         port map(
                     D => Data_in,
                     CLK => CLK, 
-                    EN => EnableLR1 ,
+                    EN => Enable ,
                     RESET => Reset,
                     Q => P_s(0)
         );
-
+  FF_1 : FF_gen_tg 
+            port map(
+                        D => P_s(0),
+                        CLK => CLK, 
+                        EN => Enable,
+                        RESET => Reset,
+                        Q => P_s(1)
+            );
+ FF_2 : FF_gen_tg 
+            port map(
+                        D => P_s(1),
+                        CLK => CLK, 
+                        EN => Enable,
+                        RESET => Reset,
+                        Q => P_s(2)
+            ); 
+                        
+FF_3 : FF_gen_tg 
+        port map(
+                    D => TempFifo1,
+                    CLK => CLK, 
+                    EN => Enable ,
+                    RESET => Reset,
+                    Q => P_s(3)
+        );
+FF_4 : FF_gen_tg 
+            port map(
+                        D => P_s(3),
+                        CLK => CLK, 
+                        EN => Enable,
+                        RESET => Reset,
+                        Q => P_s(4)
+            );
+ FF_5 : FF_gen_tg 
+            port map(
+                        D => P_s(4),
+                        CLK => CLK, 
+                        EN => Enable,
+                        RESET => Reset,
+                        Q => P_s(5)
+            );             
+FF_6 : FF_gen_tg 
+        port map(
+                    D => TempFifo2,
+                    CLK => CLK, 
+                    EN => Enable ,
+                    RESET => Reset,
+                    Q => P_s(6)
+        );
+FF_7 : FF_gen_tg 
+            port map(
+                        D => P_s(6),
+                        CLK => CLK, 
+                        EN => Enable,
+                        RESET => Reset,
+                        Q => P_s(7)
+            );
+ FF_8 : FF_gen_tg 
+            port map(
+                        D => P_s(7),
+                        CLK => CLK, 
+                        EN => Enable,
+                        RESET => Reset,
+                        Q => P_s(8)
+            );
+                    
     LR1: LR 
         port map (
         clk => clk,
         rst => reset,
         din => P_s(2),
         wr_en => wr_en1r1,
-        prog_full_thresh =>"",
+        prog_full_thresh =>"0001111100",
         dout => TempFifo1,
-        full =>full_lr1,
-        empty =>empty_1r1,
-        data_count =>Datacount_lr1,
-        prog_full =>prog_full_lr1,
-        DataAvailable=>DataAvailable_lr1
+        full => full_lr1,
+        empty => empty_1r1,
+        data_count => Datacount_lr1,
+        prog_full => prog_full_lr1,
+        DataAvailable => DataAvailable_lr1
       );
       
-   
-          
-loop_ff:for i in 1 to 8 generate
- FF_3: if i = 3  generate
- UUT3 : FF_gen_tg 
-        port map(
-                    D => TempFifo1,
-                    CLK => CLK, 
-                    EN => DataAvailable_lr1,
-                    RESET => Reset,
-                    Q => P_s(i)
-        );
-    end generate FF_3 ;
-     FF_6: if i = 6  generate
-     UUT3 : FF_gen_tg 
-            port map(
-                        D => TempFifo2,
-                        CLK => CLK, 
-                        EN => DataAvailable_lr2,
-                        RESET => Reset,
-                        Q => P_s(i)
-            );
-    end generate FF_6 ;             
-       
-    FF_0: if not(i = 3  or i = 6) and i<4 generate
-     UUTi : FF_gen_tg 
-        port map(
-                    D => P_s(i-1),
-                    CLK => CLK, 
-                    EN => DataAvailable_lr1,
-                    RESET => Reset,
-                    Q => P_s(i)
-        );
-    end generate FF_0 ;
-    
-end generate Loop_FF;
-
+       LR2: LR 
+        port map (
+        clk => clk,
+        rst => reset,
+        din => P_s(5),
+        wr_en => wr_en1r2,
+        prog_full_thresh =>"0001111100",
+        dout => TempFifo2,
+        full =>full_lr2,
+        empty =>empty_1r2,
+        data_count =>Datacount_lr2,
+        prog_full =>prog_full_lr2,
+        DataAvailable=>DataAvailable_lr2
+      );
+      
 Pipeline: process(clk)
 begin
-if(reset = '0')
-then 
+if(reset = '1')
+then
+           P1 <= "00000000";
+           P2 <= "00000000";
+           P3 <= "00000000";
+           P4 <= "00000000"; 
+           
+           P5 <= "00000000";
+           P6 <= "00000000";
+           P7 <= "00000000";
+           P8 <= "00000000";
+           P9 <= "00000000"; 
     
 elsif (CLK'event and CLK ='1' )
     then
@@ -169,7 +230,8 @@ elsif (CLK'event and CLK ='1' )
            P5 <= P_s(4);
            P6 <= P_s(5);
            P7 <= P_s(6);
-           P8 <= P_s(7);   
+           P8 <= P_s(7);
+           P9 <= P_s(8);   
          end if;
      end if;
 end process;
