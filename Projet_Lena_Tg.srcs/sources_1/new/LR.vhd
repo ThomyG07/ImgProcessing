@@ -33,8 +33,7 @@ Port (
     full : OUT STD_LOGIC;
     empty : OUT STD_LOGIC;
     data_count : OUT STD_LOGIC_VECTOR(9 DOWNTO 0);
-    prog_full : OUT STD_LOGIC;
-    DataAvailable: OUT STD_LOGIC 
+    prog_full : OUT STD_LOGIC 
 
 );
 end LR;
@@ -81,8 +80,8 @@ UUT1: fifo_generator_0 port map(
     rd_rst_busy => rd_rst_busy_s
     ); 
       
-DataAvailable <= rd_en_s;
 rd_en_s <= prog_full_s;
+prog_full <= prog_full_s;
 
 P1: process(CLK)
     begin

@@ -47,8 +47,7 @@ component LR IS
     full : OUT STD_LOGIC;
     empty : OUT STD_LOGIC;
     data_count : OUT STD_LOGIC_VECTOR(9 DOWNTO 0);
-    prog_full : OUT STD_LOGIC;
-    DataAvailable: OUT STD_LOGIC 
+    prog_full : OUT STD_LOGIC
   );
 END component;
 
@@ -76,8 +75,7 @@ UUT1: LR port map(
     full => full_s,
     empty => empty_s,
     data_count => data_count_s,
-    prog_full => prog_full_s,
-    DataAvailable => DataAvailable_s
+    prog_full => prog_full_s
     ); 
     clocking: process
   begin

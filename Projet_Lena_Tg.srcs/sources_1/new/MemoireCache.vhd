@@ -72,8 +72,7 @@ component LR IS
     full : OUT STD_LOGIC;
     empty : OUT STD_LOGIC;
     data_count : OUT STD_LOGIC_VECTOR(9 DOWNTO 0);
-    prog_full : OUT STD_LOGIC;
-    DataAvailable: OUT STD_LOGIC 
+    prog_full : OUT STD_LOGIC
   );
 END component;
 
@@ -184,8 +183,7 @@ FF_7 : FF_gen_tg
         full => full_lr1,
         empty => empty_1r1,
         data_count => Datacount_lr1,
-        prog_full => prog_full_lr1,
-        DataAvailable => DataAvailable_lr1
+        prog_full => prog_full_lr1
       );
       
        LR2: LR 
@@ -199,29 +197,9 @@ FF_7 : FF_gen_tg
         full =>full_lr2,
         empty =>empty_1r2,
         data_count =>Datacount_lr2,
-        prog_full =>prog_full_lr2,
-        DataAvailable=>DataAvailable_lr2
+        prog_full =>prog_full_lr2
       );
       
-Pipeline: process(clk)
-begin
-if(reset = '1')
-then
-           P1 <= "00000000";
-           P2 <= "00000000";
-           P3 <= "00000000";
-           P4 <= "00000000"; 
-           
-           P5 <= "00000000";
-           P6 <= "00000000";
-           P7 <= "00000000";
-           P8 <= "00000000";
-           P9 <= "00000000"; 
-    
-elsif (CLK'event and CLK ='1' )
-    then
-        if(Enable = '1')
-        then
            P1 <= P_s(0);
            P2 <= P_s(1);
            P3 <= P_s(2);
@@ -232,11 +210,5 @@ elsif (CLK'event and CLK ='1' )
            P7 <= P_s(6);
            P8 <= P_s(7);
            P9 <= P_s(8);   
-         end if;
-     end if;
-end process;
-
-
-
 
 end MemoireCache_arch;

@@ -131,10 +131,10 @@ variable I1_var :std_logic_vector (7 downto 0);
           read (Iline,I1_var);                    
           Data_in_s <= I1_var;
           DATA_AVAILABLE <= '1';
-          wait for 10 ns;
+          wait for clock_period;
         end loop;
         DATA_AVAILABLE <= '0';
-    wait for 10 ns;
+    wait for clock_period;
     file_close (vectors);      
     end process;
   
@@ -145,8 +145,7 @@ variable I1_var :std_logic_vector (7 downto 0);
     wr_en1r2_s <= '0';
     Enable_s <= '0';
     Reset_s <='1';   
-    wait for 1*clock_period;
-    
+    wait for 1*clock_period;   
     Reset_s <='0';
     wait for 10*clock_period;
     Enable_s <= '1';
@@ -156,13 +155,17 @@ variable I1_var :std_logic_vector (7 downto 0);
       
     wr_en1r1_s <= '1';
     wr_en1r2_s <= '0';
-    wait for 125 * clock_period;   
+    wait until prog_full_lr1_s ='1';   
     --FF 3 4 5
-    wait for 3*clock_period;
+    wr_en1r1_s <= '1';
+    wr_en1r2_s <= '0';
+    wait for 4*clock_period;
     wr_en1r2_s <= '1';
-    wait for 125 * clock_period;  
+    wait until prog_full_lr2_s ='1'; 
     --FF 6 7 8
-    wait for 3*clock_period;
+    wr_en1r1_s <= '1';
+    wr_en1r2_s <= '1';
+    wait for 4*clock_period;
     wait;
   
   end process;
