@@ -65,7 +65,7 @@ begin
 P_connection: process(CLK,RESET)
 begin
     if(reset = '1') then
-        EtatCourant <= Init;     
+        EtatCourant <= ResetEtat;     
     elsif(CLK'event and CLK = '1') then 
         case EtatCourant is
         
@@ -81,7 +81,7 @@ begin
                  end if;
                  
             when WaitFF1 =>
-                if(countFF = 3) then           
+                if(countFF = 2) then           
                     EtatCourant <=  WriteLR1;
                     countFF <= 0;
                  else 
@@ -98,7 +98,7 @@ begin
                  end if;
                  
               when WaitFF2 =>
-                if(countFF = 3) then           
+                if(countFF = 2) then           
                     EtatCourant <=  WriteLR2;
                     countFF <= 0;
                  else 
@@ -111,11 +111,11 @@ begin
                     EtatCourant <= WriteLR1 ;
                  elsif (prog_full_2 = '1')
                  then
-                    EtatCourant <= WaitFF2;
+                    EtatCourant <= WaitFF3;
                  end if;
                  
                  when WaitFF3 =>
-                if(countFF = 3) then           
+                if(countFF = 2) then           
                     EtatCourant <=  DataAvalaible;
                     countFF <= 0;
                  else 
@@ -130,8 +130,7 @@ begin
                  else 
                     EtatCourant <=  DataAvalaible;
                     countPixel <= countPixel + 1;
-                 end if;
-                    
+                 end if;       
                when others =>
                     EtatCourant <=  init;
                    
