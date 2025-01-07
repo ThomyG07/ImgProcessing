@@ -1,6 +1,0 @@
-# compile vhdl design source files
-vhdl xil_defaultlib  \
-"../../../../Projet_Lena_Tg.srcs/sim_1/new/TestBench_fifo.vhd" \
-
-# Do not sort compile order
-nosort

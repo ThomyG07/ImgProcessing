@@ -56,7 +56,7 @@ entity ControllerMemoireCache is
 end ControllerMemoireCache;
 
 architecture ControllerMemoireCache_arch of ControllerMemoireCache is
-type LISTE_ETAT is(ResetEtat,Init,WaitFF1,WriteLR1,WaitFF2,WriteLR2,WaitFF3,DataAvalaible);
+type LISTE_ETAT is(ResetEtat,Init,WaitFF1,WriteLR1,WaitFF2,WriteLR2,WaitFF3,DataAvailable);
 signal EtatCourant : LISTE_ETAT:= ResetEtat ; 
 signal countFF : integer:=0;
 constant MAXPixels : integer:=16384;
@@ -108,7 +108,7 @@ begin
                  
                when WriteLR2 =>
                  if (prog_full_2 = '0') then 
-                    EtatCourant <= WriteLR1 ;
+                    EtatCourant <= WriteLR2 ;
                  elsif (prog_full_2 = '1')
                  then
                     EtatCourant <= WaitFF3;
@@ -116,19 +116,19 @@ begin
                  
                  when WaitFF3 =>
                 if(countFF = 2) then           
-                    EtatCourant <=  DataAvalaible;
+                    EtatCourant <=  DataAvailable;
                     countFF <= 0;
                  else 
                     EtatCourant <=  WaitFF3;
                     countFF <= countFF + 1;
                  end if;
                  
-                 when DataAvalaible =>
+                 when DataAvailable =>
                       if(countPixel = MAXPixels) then           
                     EtatCourant <=  ResetEtat;
                     countPixel <= 0;
                  else 
-                    EtatCourant <=  DataAvalaible;
+                    EtatCourant <=  DataAvailable;
                     countPixel <= countPixel + 1;
                  end if;       
                when others =>
@@ -146,46 +146,63 @@ begin
             wr_enlr2<= '0';
             resetCache <= '1';
             EnableFF <= '0';
+            MemoryReady <= '0';
+            
         when init => 
             wr_enlr1<= '0';
             wr_enlr2<= '0';
             resetCache <= '0';
             EnableFF <= '0';
+            MemoryReady <= '0';
+            
         when WaitFF1 => 
             wr_enlr1<= '0';
             wr_enlr2<= '0';
             resetCache <= '0';
             EnableFF <= '1';
+            MemoryReady <= '0';
             
         when WriteLR1 => 
             wr_enlr1<= '1';
             wr_enlr2<= '0';
             resetCache <= '0';
             EnableFF <= '1';
+            MemoryReady <= '0';
               
         when WaitFF2 => 
             wr_enlr1<= '1';
             wr_enlr2<= '0';
             resetCache <= '0';
             EnableFF <= '1';
+            MemoryReady <= '0';
        
         when WriteLR2 => 
             wr_enlr1<= '1';
             wr_enlr2<= '1';
             resetCache <= '0';
             EnableFF <= '1';
+            MemoryReady <= '0';
             
          when WaitFF3 => 
             wr_enlr1<= '1';
             wr_enlr2<= '1';
             resetCache <= '0';
-            EnableFF <= '1';    
+            EnableFF <= '1';
+            MemoryReady <= '0';
+            
+         when DataAvailable =>
+            wr_enlr1<= '1';
+            wr_enlr2<= '1';
+            resetCache <= '0';
+            EnableFF <= '1';
+            MemoryReady <= '1';  
         
         when others => 
             wr_enlr1<= '0';
             wr_enlr2<= '0';
             resetCache <= '0';
-            EnableFF <= '0'; 
+            EnableFF <= '0';
+            MemoryReady <= '0'; 
                   
     end case;
 end process;

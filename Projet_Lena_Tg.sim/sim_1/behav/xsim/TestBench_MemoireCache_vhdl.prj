@@ -1,9 +1,0 @@
-# compile vhdl design source files
-vhdl xil_defaultlib  \
-"../../../../../../../TD1_task1/TD1_task1.srcs/sources_1/new/FF_gen_tg.vhd" \
-"../../../../Projet_Lena_Tg.srcs/sources_1/new/LR.vhd" \
-"../../../../Projet_Lena_Tg.srcs/sources_1/new/MemoireCache.vhd" \
-"../../../../Projet_Lena_Tg.srcs/sources_1/new/TestBench_MemoireCache.vhd" \
-
-# Do not sort compile order
-nosort

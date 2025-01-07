@@ -2,9 +2,9 @@
 -- Company: 
 -- Engineer: 
 -- 
--- Create Date: 25.11.2024 08:16:45
+-- Create Date: 10.12.2024 06:09:23
 -- Design Name: 
--- Module Name: TestBench_MemoireCache - TestBench_MemoireCache_arch
+-- Module Name: FIltreTestBench - FIltreTestBench_arch
 -- Project Name: 
 -- Target Devices: 
 -- Tool Versions: 
@@ -26,11 +26,13 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 use std.textio.all;
 use ieee.std_logic_textio.all;
 
-entity TestBench_MemoireCache is
---  Port ( );
-end TestBench_MemoireCache;
 
-architecture TestBench_MemoireCache_arch of TestBench_MemoireCache is
+entity FIltreTestBench is
+--  Port ( );
+end FIltreTestBench;
+
+architecture FIltreTestBench_arch of FIltreTestBench is
+
 component MemoireCache is
     Port (  clk : in STD_LOGIC;
            Data_in : in STD_LOGIC_VECTOR (7 downto 0);
@@ -58,7 +60,39 @@ component MemoireCache is
            P9 : out STD_LOGIC_VECTOR (7 downto 0)
            );
 end component;
+
+component UniteArithm is
+    Port ( 
+           clk : in STD_LOGIC;
+           MemoryReady : in STD_LOGIC;
+           P1 : in STD_LOGIC_VECTOR (7 downto 0);
+           P2 : in STD_LOGIC_VECTOR (7 downto 0);
+           P3 : in STD_LOGIC_VECTOR (7 downto 0);
+           P4 : in STD_LOGIC_VECTOR (7 downto 0);
+           P5 : in STD_LOGIC_VECTOR (7 downto 0);
+           P6 : in STD_LOGIC_VECTOR (7 downto 0);
+           P7 : in STD_LOGIC_VECTOR (7 downto 0);
+           P8 : in STD_LOGIC_VECTOR (7 downto 0);
+           P9 : in STD_LOGIC_VECTOR (7 downto 0);
+           
+           Kernel_1: in signed (2 downto 0);
+           Kernel_2: in signed (2 downto 0);
+           Kernel_3: in signed (2 downto 0);
+           Kernel_4: in signed (2 downto 0);
+
+           Kernel_5: in signed (2 downto 0);
+           Kernel_6: in signed (2 downto 0);
+           Kernel_7: in signed (2 downto 0);
+           Kernel_8: in signed (2 downto 0);
+           Kernel_9: in signed (2 downto 0);
+           
+           P_out: out STD_LOGIC_VECTOR (7 downto 0) 
+    
+    );
+end component;
+
 signal clk_s :  STD_LOGIC;
+--Cache Memory
 signal Data_in_s :  STD_LOGIC_VECTOR (7 downto 0):= "00000000";
 signal Enable_s :  STD_LOGIC;
 signal full_lr1_s :  STD_LOGIC; 
@@ -80,10 +114,22 @@ signal P6_s:  STD_LOGIC_VECTOR (7 downto 0);
 signal P7_s:  STD_LOGIC_VECTOR (7 downto 0);
 signal P8_s:  STD_LOGIC_VECTOR (7 downto 0);
 signal P9_s:  STD_LOGIC_VECTOR (7 downto 0);
+--
+--unite arithm
+signal Kernel_1: signed (2 downto 0);
+signal Kernel_2: signed (2 downto 0);
+signal Kernel_3: signed (2 downto 0);
+signal Kernel_4: signed (2 downto 0);
+signal Kernel_5: signed (2 downto 0);
+signal Kernel_6: signed (2 downto 0);
+signal Kernel_7: signed (2 downto 0);
+signal Kernel_8: signed (2 downto 0);
+signal Kernel_9: signed (2 downto 0);
+signal P_out_s:  STD_LOGIC_VECTOR (7 downto 0);
+
 constant clock_period: time := 10 ns;
 signal DATA_AVAILABLE : std_logic;
-signal MemoryReady : std_logic;
-    
+signal MemoryReady_s : STD_LOGIC;  
 begin
 UUT1: MemoireCache port map(
            clk => clk_s,
@@ -112,6 +158,29 @@ UUT1: MemoireCache port map(
            P9 => P9_s 
     ); 
     
+    UUT2: UniteArithm port map(
+           clk => clk_s,
+            MemoryReady => MemoryReady_s, 
+            P1 => P1_s, 
+            P2 => P2_s,
+            P3 => P3_s, 
+            P4 => P4_s,
+            P5 => P5_s, 
+            P6 => P6_s,
+            P7 => P7_s, 
+            P8 => P8_s,
+            P9 => P9_s,   
+           Kernel_1 => Kernel_1,
+           Kernel_2 => Kernel_2,
+           Kernel_3 => Kernel_3,
+           Kernel_4 => Kernel_4,
+           Kernel_5 => Kernel_5,
+           Kernel_6 => Kernel_6,
+           Kernel_7 => Kernel_7,
+           Kernel_8 => Kernel_8,
+           Kernel_9 => Kernel_9,
+           P_out => P_out_s 
+    ); 
 clocking: process
   begin
      clk_s <= '0'; 
@@ -144,16 +213,25 @@ variable I1_var :std_logic_vector (7 downto 0);
   --init fifo
     wr_en1r1_s <= '0';
     wr_en1r2_s <= '0';
-    MemoryReady <= '0';
     Enable_s <= '0';
-    Reset_s <='1';   
+    Reset_s <='1'; 
+    MemoryReady_s <='0';
+    Kernel_1 <= "111";
+    Kernel_2 <= "110";
+    Kernel_3 <= "111";
+    Kernel_4 <= "000";
+    Kernel_5 <= "000";
+    Kernel_6 <= "000";
+    Kernel_7 <= "001";
+    Kernel_8 <= "010";
+    Kernel_9 <= "001";  
     wait for 1*clock_period;   
     Reset_s <='0';
     wait for 10*clock_period;
     Enable_s <= '1';
     --FF 0 1 2
     wait for 3*clock_period;
-    --Write 128 value in Fifo
+    --Write 9 value in Fifo
       
     wr_en1r1_s <= '1';
     wr_en1r2_s <= '0';
@@ -168,24 +246,24 @@ variable I1_var :std_logic_vector (7 downto 0);
     wr_en1r1_s <= '1';
     wr_en1r2_s <= '1';
     wait for 4*clock_period;
-    MemoryReady <= '1';
+    MemoryReady_s <='1';
     wait for 128*128*clock_period;
-    MemoryReady <= '0';
+    MemoryReady_s <='0';
     wait;
   
   end process;
   
-   p_write: process
+  p_write: process
   file results : text;
   variable OLine : line;
   variable O1_var :std_logic_vector (7 downto 0);
     
     begin
-    file_open (results,"D:\4A\VHDL filtre\CodeSource\Lena128x128g_8bitsFiltre2.dat", write_mode);
-    wait until MemoryReady = '1';
+    file_open (results,"D:\4A\VHDL filtre\CodeSource\Lena128x128g_8bitsFiltre3.dat", write_mode);
+    wait until MemoryReady_s = '1';
     write (Oline, O1_var, right, 2);
-    while MemoryReady ='1' loop
-      write (Oline, P9_s, right, 2);
+    while MemoryReady_s ='1' loop
+      write (Oline, P_out_s, right, 2);
       writeline (results, Oline);
       wait for clock_period; 
     end loop;
@@ -193,4 +271,8 @@ variable I1_var :std_logic_vector (7 downto 0);
     wait;
  end process;
 
-end TestBench_MemoireCache_arch;
+  
+
+
+
+end FIltreTestBench_arch;

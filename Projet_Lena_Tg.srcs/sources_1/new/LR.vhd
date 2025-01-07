@@ -82,14 +82,6 @@ UUT1: fifo_generator_0 port map(
       
 rd_en_s <= prog_full_s;
 prog_full <= prog_full_s;
-
-P1: process(CLK)
-    begin
-    if (CLK'event and CLK ='1' )
-    then
-        dout <= dout_s;
-     end if;
-     
-end process;
+dout <= dout_s;
         
 end LR_arch;

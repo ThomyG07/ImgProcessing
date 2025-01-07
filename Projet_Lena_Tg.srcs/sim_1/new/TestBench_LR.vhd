@@ -61,7 +61,6 @@ signal full_s :  STD_LOGIC;
 Signal empty_s : STD_LOGIC;
 Signal data_count_s : STD_LOGIC_VECTOR(9 DOWNTO 0);
 Signal prog_full_s : STD_LOGIC;
-Signal DataAvailable_s : STD_LOGIC;
 constant clock_period: time := 10 ns;
 begin
 

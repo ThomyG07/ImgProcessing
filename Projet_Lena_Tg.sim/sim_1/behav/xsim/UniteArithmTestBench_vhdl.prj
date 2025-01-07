@@ -1,7 +1,0 @@
-# compile vhdl design source files
-vhdl xil_defaultlib  \
-"../../../../Projet_Lena_Tg.srcs/sources_1/new/UniteArithm.vhd" \
-"../../../../Projet_Lena_Tg.srcs/sim_1/new/UniteArithmTestBench.vhd" \
-
-# Do not sort compile order
-nosort

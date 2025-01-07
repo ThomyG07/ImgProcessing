@@ -133,9 +133,11 @@ clocking: process
     full_2_s <= '0';
     prog_full_2_s <= '0';
    
-    wait;
-    
-    
+    wait for 5*clock_period;
+    prog_full_1_s <= '1';
+    wait for 5*clock_period;
+    prog_full_2_s <= '1';
+    wait ;
   
   end process;
 
